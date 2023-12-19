@@ -13,7 +13,7 @@ public class ArrayDeque<T> {
         if(size==items.length){
             enlarge();
         }
-        if(nextFirst>0) {
+        if(nextFirst>=0) {
             items[nextFirst] = item;
             nextFirst--;
             size++;
@@ -120,6 +120,14 @@ public class ArrayDeque<T> {
         ArrayDeque<Character> L=new ArrayDeque<>();
         L.addLast('a');
         L.addLast('b');
+        L.addFirst('c');
+        L.addFirst('c');
+        L.addFirst('c');
+        L.addFirst('c');
+        L.addFirst('c');
+        L.addFirst('c');
+        char temp=L.removeFirst();
+        temp=L.removeFirst();
         L.addFirst('c');
         L.addLast('d');
         L.addLast('e');

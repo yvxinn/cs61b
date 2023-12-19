@@ -61,6 +61,9 @@ public class LinkedListDeque<Type> {
         }
     }
     public Type removeFirst(){
+        if(isEmpty()) {
+            return null;
+        }
         Type target=sentinel.next.item;
         sentinel.next.next.pre=sentinel;
         sentinel.next=sentinel.next.next;
@@ -68,6 +71,9 @@ public class LinkedListDeque<Type> {
         return target;
     }
     public Type removeLast(){
+        if(isEmpty()) {
+            return null;
+        }
         Type target=sentinel.pre.item;
         sentinel.pre.pre.next=sentinel;
         sentinel.pre=sentinel.pre.pre;
