@@ -113,19 +113,24 @@ public class ArrayDeque<T> {
         }
     }
     public T get(int index){
+        if(index>size-1){
+            return null;
+        }
         int realindex=(index+nextFirst+1)% items.length;
         return items[realindex];
     }
     public static void main(String[] args){
         ArrayDeque<Character> L=new ArrayDeque<>();
-        L.addLast('a');
-        L.addLast('b');
+        L.addFirst('a');
+        L.addFirst('b');
         L.addFirst('c');
-        L.addFirst('c');
-        L.addFirst('c');
-        L.addFirst('c');
-        L.addFirst('c');
-        L.addFirst('c');
+        L.addFirst('d');
+        L.addFirst('e');
+        L.addFirst('f');
+        System.out.println(L.get(2));
+        System.out.println(L.get(0));
+        System.out.println(L.get(9));
+        System.out.println(L.get(5));
         char temp=L.removeFirst();
         temp=L.removeFirst();
         L.addFirst('c');
@@ -136,6 +141,7 @@ public class ArrayDeque<T> {
         L.printDeque();
         L.removeFirst();
         L.removeLast();
+        System.out.println(L.get(2));
         L.addLast('h');
         L.addLast('Z');
         L.addFirst('X');
