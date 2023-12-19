@@ -1,3 +1,4 @@
+
 public class ArrayDeque<T> {
     T[] items;
     int size;
@@ -79,8 +80,15 @@ public class ArrayDeque<T> {
     }
     private void enlarge(){
         T[] newitems=(T[]) new Object[size*2];
-        System.arraycopy(items,0,newitems,
-                newitems.length/4,items.length);
+        int newindex=size/2;
+        int i=nextFirst+1;
+        for(int j=0;j<size;j++){
+            if(i>items.length-1){
+                i-=items.length;
+            }
+            newitems[newindex++]=items[i];
+            i++;
+        }
         items=newitems;
         nextLast=items.length/4+size;
         nextFirst=items.length/4-1;
@@ -120,39 +128,28 @@ public class ArrayDeque<T> {
         return items[realindex];
     }
     public static void main(String[] args){
-        ArrayDeque<Character> L=new ArrayDeque<>();
-        L.addFirst('a');
-        L.addFirst('b');
-        L.addFirst('c');
-        L.addFirst('d');
-        L.addFirst('e');
-        L.addFirst('f');
-        System.out.println(L.get(2));
-        System.out.println(L.get(0));
-        System.out.println(L.get(9));
-        System.out.println(L.get(5));
-        char temp=L.removeFirst();
-        temp=L.removeFirst();
-        L.addFirst('c');
-        L.addLast('d');
-        L.addLast('e');
-        L.addFirst('f');
-        L.addLast('g');
-        L.printDeque();
-        L.removeFirst();
-        L.removeLast();
-        System.out.println(L.get(2));
-        L.addLast('h');
-        L.addLast('Z');
-        L.addFirst('X');
-        L.addLast('Z');
-        L.addLast('Z');
-        L.addLast('Z');
-        L.addLast('Z');
-        L.addLast('Z');
-        L.addLast('Z');
-        L.addLast('Y');
-        L.printDeque();
-        System.out.println(L.get(2));
+        ArrayDeque<Integer> L=new ArrayDeque<>();
+        L.addLast(0);
+        L.addFirst(1);
+        L.get(0);//      ==`> 1`
+        L.removeFirst();//     ==> 1
+        L.get(0);//      ==> 0
+        L.addFirst(5);
+        L.removeLast() ;   //  ==> 0
+        L.get(0) ;//     ==> 5
+        L.removeLast() ;//     ==> 5
+        L.addFirst(9);
+        L.get(0)  ;//    ==> 9
+        L.addLast(11);
+        L.addFirst(12);
+        L.addFirst(13);
+        L.addFirst(14);
+        L.addLast(15);
+        L.addFirst(16);
+        L.addFirst(17);
+        L.removeLast() ;//     ==> 15
+        L.addLast(19);
+        L.addFirst(20);
+        L.removeLast() ;//     ==> 16
     }
 }
