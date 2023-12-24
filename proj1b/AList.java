@@ -1,0 +1,137 @@
+public class AList<T> implements Deque<T> {
+    T[] items;
+    int size;
+    int nextFirst;
+    int nextLast;
+    public AList(){
+        items= (T[]) new Object[8];
+        size=0;
+        nextFirst=4;
+        nextLast=5;
+    }
+    @Override
+    public void addFirst(T item){
+        if(size==items.length){
+            enlarge();
+        }
+        if(nextFirst>=0) {
+            items[nextFirst] = item;
+            nextFirst--;
+            size++;
+        }else{
+            nextFirst=items.length-1;
+            items[nextFirst] = item;
+            nextFirst--;
+            size++;
+        }
+    }
+    @Override
+    public void addLast(T item){
+        if(size==items.length){
+            enlarge();
+        }
+        if(nextLast< items.length) {
+            items[nextLast] = item;
+            nextLast++;
+            size++;
+        }else{
+            nextLast=0;
+            items[nextLast] = item;
+            nextLast++;
+            size++;
+        }
+    }
+    @Override
+    public T removeFirst(){
+        if(size==0)
+            return null;
+        T target = null;
+        if(nextFirst+1<=items.length-1) {
+            target = items[nextFirst + 1];
+            items[nextFirst + 1] = null;
+            nextFirst++;
+        }else{
+            target=items[0];
+            items[0]=null;
+            nextFirst=0;
+        }
+        size--;
+        if(items.length>=16&&((double) size / items.length<0.25)){
+            reduce();
+        }
+        return target;
+    }
+    @Override
+    public T removeLast(){
+        if(size==0)
+            return null;
+        T target = null;
+        if(nextLast-1>=0) {
+            target = items[nextLast - 1];
+            items[nextLast - 1] = null;
+            nextLast--;
+        }else{
+            target=items[items.length-1];
+            items[items.length-1]=null;
+            nextLast=items.length-1;
+        }
+        size--;
+        if(items.length>=16&&((double) size / items.length<0.25)){
+            reduce();
+        }
+        return target;
+    }
+    private void enlarge(){
+        T[] newitems=(T[]) new Object[size*2];
+        int newindex=size/2;
+        int i=nextFirst+1;
+        for(int j=0;j<size;j++){
+            if(i>items.length-1){
+                i-=items.length;
+            }
+            newitems[newindex++]=items[i];
+            i++;
+        }
+        items=newitems;
+        nextLast=items.length/4+size;
+        nextFirst=items.length/4-1;
+    }
+    private void reduce(){
+        T[] newitems=(T[]) new Object[items.length/2];
+        int newindex=0;
+        for(int i=nextFirst+1;i!=nextLast;i++){
+            if(i>items.length-1){
+                i-=items.length;
+            }
+            newitems[newindex++]=items[i];
+        }
+        items=newitems;
+        nextLast=size;
+        nextFirst=items.length-1;
+    }
+    @Override
+    public boolean isEmpty(){
+        return size == 0;
+    }
+    @Override
+    public int size(){
+        return size;
+    }
+    @Override
+    public void printDeque(){
+        for(int i=nextFirst+1;i!=nextLast;i++){
+            if(i>items.length-1){
+                i-=items.length;
+            }
+            System.out.print(items[i]+" ");
+        }
+    }
+    @Override
+    public T get(int index){
+        if(index>size-1){
+            return null;
+        }
+        int realindex=(index+nextFirst+1)% items.length;
+        return items[realindex];
+    }
+}
