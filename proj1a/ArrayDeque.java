@@ -127,29 +127,5 @@ public class ArrayDeque<T> {
         int realindex=(index+nextFirst+1)% items.length;
         return items[realindex];
     }
-    public static void main(String[] args){
-        ArrayDeque<Integer> L=new ArrayDeque<>();
-        L.addLast(0);
-        L.addFirst(1);
-        L.get(0);//      ==`> 1`
-        L.removeFirst();//     ==> 1
-        L.get(0);//      ==> 0
-        L.addFirst(5);
-        L.removeLast() ;   //  ==> 0
-        L.get(0) ;//     ==> 5
-        L.removeLast() ;//     ==> 5
-        L.addFirst(9);
-        L.get(0)  ;//    ==> 9
-        L.addLast(11);
-        L.addFirst(12);
-        L.addFirst(13);
-        L.addFirst(14);
-        L.addLast(15);
-        L.addFirst(16);
-        L.addFirst(17);
-        L.removeLast() ;//     ==> 15
-        L.addLast(19);
-        L.addFirst(20);
-        L.removeLast() ;//     ==> 16
-    }
+
 }

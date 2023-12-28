@@ -2,12 +2,13 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import byog.TileEngine.Tileset;
 
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
+    public static final int WIDTH = 60;
+    public static final int HEIGHT = 60;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -31,8 +32,29 @@ public class Game {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
+        int tempindex = input.length();
+        for(int i=1;i<input.length();i++){
+            if(input.charAt(i)>'9'||input.charAt(i)<'0'){
+                tempindex=i;
+            }
+        }
+        long seed=Integer.parseInt(input.substring(1,tempindex));
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        // initialize tiles
+        TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
+        for (int x = 0; x < WIDTH; x += 1) {
+            for (int y = 0; y < HEIGHT; y += 1) {
+                finalWorldFrame[x][y] = Tileset.WALL;
+            }
+        }
+        //生成随机房间
+        Generate generate=new Generate(seed,WIDTH,HEIGHT);
+        generate.GenerateRoom(finalWorldFrame,ter);
+        generate.initHallways(finalWorldFrame,ter);
 
-        TETile[][] finalWorldFrame = null;
+        ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
     }
+
 }
