@@ -7,8 +7,8 @@ import byog.TileEngine.Tileset;
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 60;
-    public static final int HEIGHT = 60;
+    public static final int WIDTH = 61;
+    public static final int HEIGHT = 41;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -38,7 +38,7 @@ public class Game {
                 tempindex=i;
             }
         }
-        long seed=Integer.parseInt(input.substring(1,tempindex));
+        long seed=Long.parseLong(input.substring(1,tempindex));
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         // initialize tiles
@@ -52,6 +52,8 @@ public class Game {
         Generate generate=new Generate(seed,WIDTH,HEIGHT);
         generate.GenerateRoom(finalWorldFrame,ter);
         generate.initHallways(finalWorldFrame,ter);
+        generate.connectRegion(finalWorldFrame,ter);
+
 
         ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;

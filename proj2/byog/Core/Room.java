@@ -19,10 +19,10 @@ public class Room {
         return y;
     }
     public int getX2(){
-        return x+width;
+        return x+width-1;
     }
     public int getY2(){
-        return y+height;
+        return y+height-1;
     }
     public int getHeight() {
         return height;
@@ -47,6 +47,12 @@ public class Room {
         if((x+width>=worldWidth||y+height>=worldHeight)){
             return false;
         }
+        if(x%2==0||y%2==0){
+            return false;
+        }
+        if(getX2()%2==0||getY2()%2==0){
+            return false;
+        }
         for(Room room:rooms){
             if(isCovered(room)){
                 return false;
@@ -55,8 +61,8 @@ public class Room {
         return true;
     }
     public boolean isCovered(Room otherRoom){
-        return (this.getX() < otherRoom.getX2() && this.getX2() > otherRoom.getX())
-                && (this.getY() < otherRoom.getY2() && this.getY2() > otherRoom.getY());
+        return (this.getX() < otherRoom.getX2()+1 && this.getX2()+1 > otherRoom.getX())
+                && (this.getY() < otherRoom.getY2()+1 && this.getY2()+1 > otherRoom.getY());
     }
 
 }
