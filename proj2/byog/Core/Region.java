@@ -18,4 +18,10 @@ public class Region {
     public boolean inRegion(Position position){
         return positions.contains(position);
     }
+    public static Region combine(Region A,Region B){
+        Region ret=new Region();
+        ret.positions.addAll(A.positions);
+        ret.positions.addAll(B.positions);
+        return ret;
+    }
 }

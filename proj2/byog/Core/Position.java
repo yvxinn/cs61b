@@ -63,7 +63,8 @@ public class Position {
             p1=new Position(x,y+1);
             flag=true;
         }
-        if(flag&&(p0.findRegion(regions)!=(p1.findRegion(regions)))){
+        if(flag&&(p0.findRegion(regions)!=(p1.findRegion(regions)))
+                &&p0.findRegion(regions)!=null&&p1.findRegion(regions)!=null){
             return new ConnectWall(this, p0.findRegion(regions), p1.findRegion(regions) );
         }
         return null;
@@ -78,5 +79,20 @@ public class Position {
     @Override
     public int hashCode(){
         return Objects.hash(x,y);
+    }
+    public Position findOpenDire(Position position,TETile[][] finalWorldFrame){
+        if(finalWorldFrame[position.x][position.y+1].equals(Tileset.FLOOR)){
+            return new Position(position.x, position.y+1);
+        }
+        if(finalWorldFrame[position.x][position.y-1].equals(Tileset.FLOOR)){
+            return new Position(position.x, position.y-1);
+        }
+        if(finalWorldFrame[position.x+1][position.y].equals(Tileset.FLOOR)){
+            return new Position(position.x+1, position.y);
+        }
+        if(finalWorldFrame[position.x-1][position.y].equals(Tileset.FLOOR)){
+            return new Position(position.x-1, position.y);
+        }
+        return null;
     }
 }

@@ -24,8 +24,8 @@ public class Generate {
         for(int i=0;i<num;){
             int xPos=RandomUtils.uniform(thisRandom,1,width);
             int yPos=RandomUtils.uniform(thisRandom,1,height);
-            int w=RandomUtils.uniform(thisRandom,width/15,width/5);
-            int h=RandomUtils.uniform(thisRandom,height/15,height/5);
+            int w=RandomUtils.uniform(thisRandom,width/20,width/7);
+            int h=RandomUtils.uniform(thisRandom,height/20,height/7);
             Room temp=new Room(xPos,yPos,w,h);
             if(temp.islegal(width,height,rooms)) {
                 temp.drawRoom(finalWorldFrame, ter);
@@ -172,7 +172,6 @@ public class Generate {
                 ConnectWall connectWall=thisPos.isConnectWall(finalWorldFrame,width,height,regions);
                 if(connectWall!=null){
                     connectWalls.add(connectWall);
-//                    finalWorldFrame[connectWall.x][connectWall.y]=Tileset.FLOWER;
                 }
             }
         }
@@ -180,30 +179,60 @@ public class Generate {
             System.out.print("yes");
         }
     }
-
-
-
     public void connectRegions(TETile[][] finalWorldFrame,TERenderer ter){
         RoomToRegion();
-        findConnectWall(finalWorldFrame);
         Random random=new Random(seed);
-        while(!connectWalls.isEmpty()) {
+        while(regions.size()>1) {
+            findConnectWall(finalWorldFrame);
+
             Iterator<ConnectWall> iterator = connectWalls.iterator();
+            int randomIndex = RandomUtils.uniform(random,connectWalls.size());
+            for (int i = 0; i < randomIndex; i++) {
+                iterator.next();
+            }
             ConnectWall thisConnectWall = iterator.next();
+
             finalWorldFrame[thisConnectWall.x][thisConnectWall.y] = Tileset.FLOOR;
-            Set<ConnectWall> toDelete=new HashSet<>();
+            Region newRegion = Region.combine(thisConnectWall.A, thisConnectWall.B);
+            newRegion.addPos(thisConnectWall);
             for (ConnectWall wall : connectWalls) {
                 if (wall.SameOf(thisConnectWall)) {
-//                    int temp = RandomUtils.uniform(random, 25);
-//                    if (temp == 3) {
-//                        finalWorldFrame[wall.x][wall.y] = Tileset.FLOOR;
-//                    }
-                    toDelete.add(wall);
+                    int temp = RandomUtils.uniform(random, 50);
+                    if (temp == 3) {
+                        finalWorldFrame[wall.x][wall.y] = Tileset.FLOOR;
+                        newRegion.addPos(wall);
+                    }
                 }
             }
-            toDelete.add(thisConnectWall);
-            connectWalls.removeAll(toDelete);
+            regions.add(newRegion);
+            regions.remove(thisConnectWall.A);
+            regions.remove(thisConnectWall.B);
+            connectWalls.clear();
+        }
+
+
+    }
+
+    private void FillOneWay(Position position,TETile[][] finalWorldFrame){
+        if(position.openDirection(finalWorldFrame,width,height)!=1)
+            return;
+        finalWorldFrame[position.x][position.y]=Tileset.WALL;
+        Position next=position.findOpenDire(position,finalWorldFrame);
+        FillOneWay(next,finalWorldFrame);
+    }
+    public void modifyHallway(TETile[][] finalWorldFrame){
+        Set<Position> deadends=new HashSet<>();
+        for(int i=1;i<width-1;i++){
+            for(int j=1;j<height-1;j++){
+                Position thisPos=new Position(i,j);
+                if(finalWorldFrame[i][j].equals(Tileset.FLOOR)
+                        &&thisPos.openDirection(finalWorldFrame,width,height)==1){
+                    deadends.add(thisPos);
+                }
+            }
+        }
+        for(Position p:deadends){
+            FillOneWay(p,finalWorldFrame);
         }
     }
-    //Todo: 选取一个区域，将他和另一个区域相连，去除相邻点，递归到没有相邻点
 }

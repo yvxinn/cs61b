@@ -7,8 +7,8 @@ import byog.TileEngine.Tileset;
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 61;
-    public static final int HEIGHT = 41;
+    public static final int WIDTH = 91;
+    public static final int HEIGHT = 61;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -53,7 +53,7 @@ public class Game {
         generate.GenerateRoom(finalWorldFrame,ter);
         generate.initHallways(finalWorldFrame,ter);
         generate.connectRegions(finalWorldFrame,ter);
-
+        generate.modifyHallway(finalWorldFrame);
 
         ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
