@@ -51,16 +51,6 @@ public class Generate {
                 break;
             }
         }
-        for(int i=1;i<width-1;i++){
-            for(int j=1;j<height-1;j++){
-                Position thisPos=new Position(i,j);
-                if(finalWorldFrame[i][j].equals(Tileset.FLOOR)
-                        &&thisPos.openDirection(finalWorldFrame,width,height)==0){
-                    finalWorldFrame[i][j]=Tileset.WALL;
-                }
-            }
-        }
-
     }
     private void initHallwaysHelper(TETile[][] finalWorldFrame, Stack<Position> line, Random thisRandom, int count, Region thisRegion){
         if(line.isEmpty()){
@@ -214,7 +204,7 @@ public class Generate {
     }
 
     private void FillOneWay(Position position,TETile[][] finalWorldFrame){
-        if(position.openDirection(finalWorldFrame,width,height)!=1)
+        if(position==null||position.openDirection(finalWorldFrame,width,height)>1)
             return;
         finalWorldFrame[position.x][position.y]=Tileset.WALL;
         Position next=position.findOpenDire(position,finalWorldFrame);
@@ -226,7 +216,7 @@ public class Generate {
             for(int j=1;j<height-1;j++){
                 Position thisPos=new Position(i,j);
                 if(finalWorldFrame[i][j].equals(Tileset.FLOOR)
-                        &&thisPos.openDirection(finalWorldFrame,width,height)==1){
+                        &&thisPos.openDirection(finalWorldFrame,width,height)<=1){
                     deadends.add(thisPos);
                 }
             }
