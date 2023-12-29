@@ -172,7 +172,7 @@ public class Generate {
                 ConnectWall connectWall=thisPos.isConnectWall(finalWorldFrame,width,height,regions);
                 if(connectWall!=null){
                     connectWalls.add(connectWall);
-                    finalWorldFrame[connectWall.x][connectWall.y]=Tileset.FLOWER;
+//                    finalWorldFrame[connectWall.x][connectWall.y]=Tileset.FLOWER;
                 }
             }
         }
@@ -181,10 +181,29 @@ public class Generate {
         }
     }
 
-    public void connectRegion(TETile[][] finalWorldFrame,TERenderer ter){
+
+
+    public void connectRegions(TETile[][] finalWorldFrame,TERenderer ter){
         RoomToRegion();
         findConnectWall(finalWorldFrame);
-        return;
+        Random random=new Random(seed);
+        while(!connectWalls.isEmpty()) {
+            Iterator<ConnectWall> iterator = connectWalls.iterator();
+            ConnectWall thisConnectWall = iterator.next();
+            finalWorldFrame[thisConnectWall.x][thisConnectWall.y] = Tileset.FLOOR;
+            Set<ConnectWall> toDelete=new HashSet<>();
+            for (ConnectWall wall : connectWalls) {
+                if (wall.SameOf(thisConnectWall)) {
+//                    int temp = RandomUtils.uniform(random, 25);
+//                    if (temp == 3) {
+//                        finalWorldFrame[wall.x][wall.y] = Tileset.FLOOR;
+//                    }
+                    toDelete.add(wall);
+                }
+            }
+            toDelete.add(thisConnectWall);
+            connectWalls.removeAll(toDelete);
+        }
     }
-    //Todo: 设计一个连接点类   包含sideA和sideB（Region）  传入Regions链表  找到AB
+    //Todo: 选取一个区域，将他和另一个区域相连，去除相邻点，递归到没有相邻点
 }

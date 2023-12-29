@@ -4,6 +4,7 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
 import java.util.Deque;
+import java.util.Objects;
 
 public class Position {
     public int x,y;
@@ -30,7 +31,6 @@ public class Position {
     }
     @Override
     public boolean equals(Object o){
-        System.out.print("in");
         if(o==null){
             return false;
         }
@@ -38,7 +38,13 @@ public class Position {
             return false;
         }
         Position other=(Position) o;
-        return (x == other.x) && (y == other.y);
+        if(this.x!=other.x){
+            return false;
+        }
+        if(this.y!=other.y){
+            return false;
+        }
+        return true;
     }
     public ConnectWall isConnectWall(TETile[][] finalWorldFrame,int maxX,int maxY,Deque<Region> regions) {
         Position p0=null;
@@ -64,11 +70,13 @@ public class Position {
     }
     public Region findRegion(Deque<Region> regions){
         for(Region region:regions){
-            for(Position p:region.positions){
-                if(p.x==x&&p.y==y)
-                    return region;
-            }
+            if(region.positions.contains(this))
+                return region;
         }
         return null;
+    }
+    @Override
+    public int hashCode(){
+        return Objects.hash(x,y);
     }
 }

@@ -52,7 +52,7 @@ public class Game {
         Generate generate=new Generate(seed,WIDTH,HEIGHT);
         generate.GenerateRoom(finalWorldFrame,ter);
         generate.initHallways(finalWorldFrame,ter);
-        generate.connectRegion(finalWorldFrame,ter);
+        generate.connectRegions(finalWorldFrame,ter);
 
 
         ter.renderFrame(finalWorldFrame);
