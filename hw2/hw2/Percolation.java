@@ -5,12 +5,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class Percolation {
-    int [][]sites;      //0:close 1:open 2:full
+    private int [][]sites;      //0:close 1:open 2:full
     private int OpenSites;
-    int up;
-    int down;
-    WeightedQuickUnionUF w;
-    WeightedQuickUnionUF w2;
+    private int up;
+    private int down;
+    private WeightedQuickUnionUF w;
+    private WeightedQuickUnionUF w2;
     public Percolation(int N){
         w=new WeightedQuickUnionUF(N*N+3);
         w2=new WeightedQuickUnionUF(N*N+3);
@@ -22,13 +22,6 @@ public class Percolation {
         sites=new int[N][N];
         for(int i=0;i<N;i++){
             for(int j=0;j<N;j++){
-                if(i==0){
-                    w.union(IDof(i,j), up);
-                    w2.union(IDof(i,j), up);
-                }
-                if (i == N - 1) {
-                    w.union(IDof(i,j),down);
-                }
                 sites[i][j]=0;
             }
         }
@@ -56,6 +49,13 @@ public class Percolation {
         }
     }
     public void open(int row, int col){
+        if(row==0){
+            w.union(IDof(row,col), up);
+            w2.union(IDof(row,col), up);
+        }
+        if (row == sites.length - 1) {
+            w.union(IDof(row,col),down);
+        }
         if(row>sites.length-1||col>sites.length||row<0||col<0){
             throw new IndexOutOfBoundsException();
         }

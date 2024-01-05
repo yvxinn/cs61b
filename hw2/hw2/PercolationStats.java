@@ -1,10 +1,13 @@
 package hw2;
 
 public class PercolationStats {
-    double results[];
-    int T;
+    private double results[];
+    private int T;
 
     public PercolationStats(int N, int T, PercolationFactory pf){
+        if(T<=0){
+            throw new IllegalArgumentException();
+        }
         this.T=T;
         results=new double[T];
         for(int i=0;i<T;i++) {
