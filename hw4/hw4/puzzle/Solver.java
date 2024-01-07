@@ -14,10 +14,8 @@ public class Solver {
         WorldState worldState;
         int MoveTimes;
         SearchNode pre;
-        boolean isUsed;
         private int estimatedDistanceToGoal;
         public SearchNode(WorldState w,int times,SearchNode pre){
-            isUsed=false;
             this.worldState=w;
             this.MoveTimes=times;
             this.pre=pre;
@@ -38,34 +36,30 @@ public class Solver {
         }
         return true;
     }
-    private SearchNode SolverHelper(edu.princeton.cs.algs4.MinPQ<SearchNode> queue){
-        if(queue==null){
-            throw new RuntimeException("Solution Not Found");
-        }else{
-            SearchNode node=queue.delMin();
-            node.isUsed=true;
+
+    public Solver(WorldState initial){
+        moves=0;
+        solution=new ArrayDeque<>();
+        edu.princeton.cs.algs4.MinPQ<SearchNode> queue=new MinPQ<>();
+        queue.insert(new SearchNode(initial,moves,null));
+        SearchNode node;
+        while (true){
+            if(queue==null) {
+                throw new RuntimeException("Solution Not Found");
+            }
+            node=queue.delMin();
             if(node.worldState.isGoal()){
-                return node;
+                break;
             }
             for(WorldState w:node.worldState.neighbors()){
                 if(islegal(node,w)) {
                     queue.insert(new SearchNode(w, node.MoveTimes+1, node));
                 }
             }
-            return SolverHelper(queue);
         }
-    }
-    public Solver(WorldState initial){
-        moves=0;
-        solution=new ArrayDeque<>();
-        edu.princeton.cs.algs4.MinPQ<SearchNode> queue=new MinPQ<>();
-        queue.insert(new SearchNode(initial,moves,null));
-
-
-        SearchNode finalnode=SolverHelper(queue);
-        while(finalnode!=null){
-            solution.addFirst(finalnode.worldState);
-            finalnode=finalnode.pre;
+        while(node!=null){
+            solution.addFirst(node.worldState);
+            node=node.pre;
         }
     }
 
