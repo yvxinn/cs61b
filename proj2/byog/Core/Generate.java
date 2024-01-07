@@ -225,4 +225,17 @@ public class Generate {
             FillOneWay(p,finalWorldFrame);
         }
     }
+    public Position start(TETile[][] finalWorldFrame){
+        int i,j;
+        Random random=new Random(seed);
+        while(true){
+            i=RandomUtils.uniform(random,width-1);
+            j=RandomUtils.uniform(random,height-1);
+            if(finalWorldFrame[i][j].equals(Tileset.FLOOR)){
+                break;
+            }
+        }
+        finalWorldFrame[i][j]=Tileset.PLAYER;
+        return new Position(i,j);
+    }
 }
